@@ -58,6 +58,8 @@ const config = {
         nam: {
           main: "#6C29D8",
           gray: "#D9D9D9",
+          dark: "#333333",
+          darkGray: "#2D2E2F",
         },
       },
       keyframes: {
@@ -73,6 +75,9 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      fontSize: {
+        "32px": "32px",
       },
     },
   },
