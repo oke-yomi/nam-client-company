@@ -4,29 +4,46 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "./ui/form";
+import { Form } from "./ui/form";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import FormInput from "./shared/FormInput";
+import Link from "next/link";
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
+const formSchema = z
+  .object({
+    companyName: z
+      .string()
+      .min(2, { message: "Company name must be at least 2 characters." }),
+    firstname: z.string().min(1, { message: "First name is required" }),
+    lastname: z.string().min(1, { message: "Last name is required" }),
+    email: z
+      .string()
+      .min(1, { message: "Email address is required" })
+      .email({ message: "Invalid email address" }),
+    phone: z
+      .string()
+      .min(10, { message: "Phone number must be at least 10 digits" }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" }),
+    confirmPassword: z.string(),
+  })
+  .refine((values) => values.password === values.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 const RegisterForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      companyName: "",
+      firstname: "",
+      lastname: "",
+      email: "",
+      phone: "",
+      password: "",
+      confirmPassword: "",
     },
   });
 
@@ -42,30 +59,64 @@ const RegisterForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 lg:space-y-6"
+        className="space-y-8 lg:space-y-9"
       >
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-extrabold text-nam-darkGray">
-                Company Name*
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="shadcn"
-                  {...field}
-                  className={
-                    form.formState.errors[field.name] ? "border-destructive focus-visible:ring-0" : ""
-                  }
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
+        <div className="space-y-4 lg:space-y-6">
+          <FormInput
+            form={form}
+            label="Company Name*"
+            name="companyName"
+            placeholder="Namhr"
+          />
+
+          <div className="flex flex-col lg:flex-row gap-4 w-full">
+            <FormInput
+              form={form}
+              label="First name*"
+              name="firstname"
+              placeholder="Kai"
+            />
+            <FormInput
+              form={form}
+              label="Last Name*"
+              name="lastname"
+              placeholder="Doe"
+            />
+          </div>
+
+          <FormInput
+            form={form}
+            label="Email*"
+            name="email"
+            placeholder="kaidoe@gmail.com"
+          />
+
+          <FormInput form={form} label="Phone Number*" name="phone" />
+
+          <FormInput form={form} label="Password*" name="password" password />
+
+          <FormInput
+            form={form}
+            label="Confirm Password*"
+            name="confirmPassword"
+            password
+          />
+        </div>
+
+        <div className="">
+          <Button
+            type="submit"
+            variant="namPrimary"
+            className="rounded p-4 w-full font-medium"
+          >
+            Submit
+          </Button>
+
+          <div className="flex items-center justify-center gap-1 mt-4 font-medium text-sm">
+            <p className="text-nam-dark">Already have an account?</p>
+            <Link href={""} className="text-nam-main">Login</Link>
+          </div>
+        </div>
       </form>
     </Form>
   );

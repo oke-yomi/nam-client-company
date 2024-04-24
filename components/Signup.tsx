@@ -4,9 +4,15 @@ import RegisterForm from "./RegisterForm";
 
 const Signup = () => {
   return (
-    <div className="max-w-screen-xxl px-4 w-full mx-auto">
-      <div className="w-full h-full flex">
-        <div className="bg-[url('/images/signup.webp')] h-screen w-1/2 hidden lg:block">
+    <div className="max-w-screen-xxl w-full mx-auto bg-white">
+      <div className="w-full lg:h-screen h-full flex">
+        <div className="bg-nam-black h-screen w-1/2 hidden lg:block relative">
+          <Image
+            src="/images/signup.webp"
+            alt=""
+            fill
+            className="absolute w-full h-full top-0 left-0 right-0 object-cover"
+          />
           <div className="w-full h-full flex justify-center items-end px-[60px] py-[71px]">
             <div className="text-white bg-white/5 backdrop-blur-md py-9 px-[74px] rounded-lg text-center">
               <p className="font-black text-2xl">Accept Response Invitation</p>
@@ -28,10 +34,12 @@ const Signup = () => {
         </div>
 
         <div className="lg:w-1/2 w-full">
-          <div className="w-full h-full pt-10 pb-8 px-6 lg:px-[140px] lg:pt-[72px] lg:pb-[76px]">
+          <div className="w-full h-full pt-10 pb-8 px-6 lg:px-[140px] lg:pt-[72px] lg:pb-[76px] overflow-y-scroll no-scrollbar">
             <div className="flex flex-col justify-center items-center px-[52px] lg:px-0 mb-6 lg:mb-12">
               <Image src={"/logo.svg"} alt={""} width={64} height={40} />
-              <h5 className="text-2xl lg:text-32px font-extrabold lg:font-black mt-4 text-center">Create Company Account</h5>
+              <h5 className="text-2xl lg:text-32px font-extrabold lg:font-black mt-4 text-center text-nam-black">
+                Create Company Account
+              </h5>
             </div>
 
             <RegisterForm />

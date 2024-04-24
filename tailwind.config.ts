@@ -60,6 +60,8 @@ const config = {
           gray: "#D9D9D9",
           dark: "#333333",
           darkGray: "#2D2E2F",
+          borderGray: "#DCDCE4",
+          black: "#121212",
         },
       },
       keyframes: {
