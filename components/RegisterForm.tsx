@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,34 +8,22 @@ import { Form } from "./ui/form";
 import { Button } from "./ui/button";
 import FormInput from "./shared/FormInput";
 import Link from "next/link";
+import { useSignUp } from "@clerk/nextjs";
+import { signupSchema } from "@/lib/schema";
+import { useToast } from "./ui/use-toast";
 
-const formSchema = z
-  .object({
-    companyName: z
-      .string()
-      .min(2, { message: "Company name must be at least 2 characters." }),
-    firstname: z.string().min(1, { message: "First name is required" }),
-    lastname: z.string().min(1, { message: "Last name is required" }),
-    email: z
-      .string()
-      .min(1, { message: "Email address is required" })
-      .email({ message: "Invalid email address" }),
-    phone: z
-      .string()
-      .min(10, { message: "Phone number must be at least 10 digits" }),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters" }),
-    confirmPassword: z.string(),
-  })
-  .refine((values) => values.password === values.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+interface Props {
+  setPendingVerification: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const RegisterForm = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+const RegisterForm = ({ setPendingVerification }: Props) => {
+  const { isLoaded, signUp } = useSignUp();
+  const { toast } = useToast();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const form = useForm<z.infer<typeof signupSchema>>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
       companyName: "",
       firstname: "",
@@ -47,11 +35,43 @@ const RegisterForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // setIsLoading(true);
+  const onSubmit = async (values: z.infer<typeof signupSchema>) => {
+    setIsLoading(true);
 
-    console.log(values);
+    if (!isLoaded) {
+      return;
+    }
 
+    try {
+      await signUp.create({
+        emailAddress: values.email,
+        password: values.password,
+      });
+
+      await signUp.prepareEmailAddressVerification({
+        strategy: "email_code",
+      });
+
+      toast({
+        title: "Registration Ongoing",
+        description: "Kindly check your email to add the otp code",
+      });
+
+      setPendingVerification(true);
+    } catch (error: any) {
+      let errorMessage = "There was a problem with your request.";
+      if (error && error.errors && error.errors.length > 0) {
+        errorMessage = error.errors[0].message;
+      }
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: errorMessage,
+      });
+      console.error(JSON.stringify(error, null, 2));
+    }
+
+    setIsLoading(false);
     // form.reset();
   };
 
@@ -109,12 +129,14 @@ const RegisterForm = () => {
             variant="namPrimary"
             className="rounded p-4 w-full font-medium"
           >
-            Submit
+            {isLoading ? "Loading..." : "Submit"}
           </Button>
 
           <div className="flex items-center justify-center gap-1 mt-4 font-medium text-sm">
             <p className="text-nam-dark">Already have an account?</p>
-            <Link href={""} className="text-nam-main">Login</Link>
+            <Link href={""} className="text-nam-main">
+              Login
+            </Link>
           </div>
         </div>
       </form>

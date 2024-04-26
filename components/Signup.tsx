@@ -1,8 +1,12 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import RegisterForm from "./RegisterForm";
+import { UserButton } from "@clerk/nextjs";
+import SignupCode from "./SignupCode";
 
 const Signup = () => {
+  const [pendingVerification, setPendingVerification] = useState(false);
+
   return (
     <div className="max-w-screen-xxl w-full mx-auto bg-white">
       <div className="w-full lg:h-screen h-full flex">
@@ -40,9 +44,15 @@ const Signup = () => {
               <h5 className="text-2xl lg:text-32px font-extrabold lg:font-black mt-4 text-center text-nam-black">
                 Create Company Account
               </h5>
+
+              <UserButton />
             </div>
 
-            <RegisterForm />
+            {pendingVerification ? (
+              <SignupCode />
+            ) : (
+              <RegisterForm setPendingVerification={setPendingVerification} />
+            )}
           </div>
         </div>
       </div>
