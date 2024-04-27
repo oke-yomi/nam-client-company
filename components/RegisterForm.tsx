@@ -11,12 +11,14 @@ import Link from "next/link";
 import { useSignUp } from "@clerk/nextjs";
 import { signupSchema } from "@/lib/schema";
 import { useToast } from "./ui/use-toast";
+import Image from "next/image";
 
 interface Props {
   setPendingVerification: React.Dispatch<React.SetStateAction<boolean>>;
+  setEmailAddress: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const RegisterForm = ({ setPendingVerification }: Props) => {
+const RegisterForm = ({ setPendingVerification, setEmailAddress }: Props) => {
   const { isLoaded, signUp } = useSignUp();
   const { toast } = useToast();
 
@@ -41,6 +43,8 @@ const RegisterForm = ({ setPendingVerification }: Props) => {
     if (!isLoaded) {
       return;
     }
+
+    setEmailAddress(values.email);
 
     try {
       await signUp.create({
@@ -76,71 +80,80 @@ const RegisterForm = ({ setPendingVerification }: Props) => {
   };
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 lg:space-y-9"
-      >
-        <div className="space-y-4 lg:space-y-6">
-          <FormInput
-            form={form}
-            label="Company Name*"
-            name="companyName"
-            placeholder="Namhr"
-          />
+    <div className="w-full h-full pt-10 pb-8 lg:pt-[72px] lg:pb-[76px]">
+      <div className="flex flex-col justify-center items-center px-[52px] lg:px-0 mb-6 lg:mb-12">
+        <Image src={"/logo.svg"} alt={""} width={64} height={40} />
+        <h5 className="text-2xl lg:text-32px font-extrabold lg:font-black mt-14 text-center text-nam-black">
+          Create Company Account
+        </h5>
+      </div>
 
-          <div className="flex flex-col lg:flex-row gap-4 w-full">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 lg:space-y-9"
+        >
+          <div className="space-y-4 lg:space-y-6">
             <FormInput
               form={form}
-              label="First name*"
-              name="firstname"
-              placeholder="Kai"
+              label="Company Name*"
+              name="companyName"
+              placeholder="Namhr"
             />
+
+            <div className="flex flex-col lg:flex-row gap-4 w-full">
+              <FormInput
+                form={form}
+                label="First name*"
+                name="firstname"
+                placeholder="Kai"
+              />
+              <FormInput
+                form={form}
+                label="Last Name*"
+                name="lastname"
+                placeholder="Doe"
+              />
+            </div>
+
             <FormInput
               form={form}
-              label="Last Name*"
-              name="lastname"
-              placeholder="Doe"
+              label="Email*"
+              name="email"
+              placeholder="kaidoe@gmail.com"
+            />
+
+            <FormInput form={form} label="Phone Number*" name="phone" />
+
+            <FormInput form={form} label="Password*" name="password" password />
+
+            <FormInput
+              form={form}
+              label="Confirm Password*"
+              name="confirmPassword"
+              password
             />
           </div>
 
-          <FormInput
-            form={form}
-            label="Email*"
-            name="email"
-            placeholder="kaidoe@gmail.com"
-          />
+          <div className="">
+            <Button
+              type="submit"
+              variant="namPrimary"
+              className="rounded p-4 w-full font-medium"
+            >
+              {isLoading ? "Loading..." : "Submit"}
+            </Button>
 
-          <FormInput form={form} label="Phone Number*" name="phone" />
-
-          <FormInput form={form} label="Password*" name="password" password />
-
-          <FormInput
-            form={form}
-            label="Confirm Password*"
-            name="confirmPassword"
-            password
-          />
-        </div>
-
-        <div className="">
-          <Button
-            type="submit"
-            variant="namPrimary"
-            className="rounded p-4 w-full font-medium"
-          >
-            {isLoading ? "Loading..." : "Submit"}
-          </Button>
-
-          <div className="flex items-center justify-center gap-1 mt-4 font-medium text-sm">
-            <p className="text-nam-dark">Already have an account?</p>
-            <Link href={""} className="text-nam-main">
-              Login
-            </Link>
+            <div className="flex items-center justify-center gap-1 mt-4 font-medium text-sm">
+              <p className="text-nam-dark">Already have an account?</p>
+              <Link href={"/sign-in"} className="text-nam-main">
+                Login
+              </Link>
+            </div>
           </div>
-        </div>
-      </form>
-    </Form>
+        </form>
+      </Form>
+    </div>
   );
 };
 

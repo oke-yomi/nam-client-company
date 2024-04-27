@@ -1,5 +1,11 @@
-import { SignUp } from "@clerk/nextjs";
- 
+"use client";
+
+import Signup from "@/components/Signup";
+
 export default function Page() {
-  return <SignUp path="/sign-up" />;
+  return (
+    <>
+      <Signup />
+    </>
+  );
 }
