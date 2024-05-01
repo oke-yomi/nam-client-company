@@ -62,6 +62,7 @@ const config = {
           darkGray: "#2D2E2F",
           borderGray: "#DCDCE4",
           black: "#121212",
+          heading: "#32324D",
         },
       },
       keyframes: {
@@ -85,6 +86,9 @@ const config = {
       },
       fontSize: {
         "32px": "32px",
+      },
+      boxShadow: {
+        "custom-shadow": "0px 5px 20px 0px rgba(0, 0, 0, 0.1)",
       },
     },
   },

@@ -86,3 +86,23 @@
     scrollbar-width: none; /* Firefox */
   }
 }
+
+.bg-image {
+  width: 100%;
+  background-color: white;
+  background-image: url("/images/small-bg.webp");
+  background-repeat: "no-repeat";
+  background-size: cover;
+  background-position: "center";
+}
+
+@media screen and (min-width: 768px) {
+  .bg-image {
+    width: 100%;
+    background-color: white;
+    background-image: url("/images/large-bg.webp");
+    background-repeat: "no-repeat";
+    background-size: cover;
+    background-position: "center";
+  }
+}

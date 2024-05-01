@@ -38,7 +38,7 @@ const FormInput = ({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="font-extrabold text-nam-darkGray">
+          <FormLabel className="font-semibold text-nam-darkGray lg:text-xs text-sm">
             {label}
           </FormLabel>
           <FormControl>
