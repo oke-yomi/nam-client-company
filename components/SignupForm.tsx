@@ -62,9 +62,9 @@ const SignupForm = () => {
 
   return (
     <div className="w-full h-full">
-      <h5 className="text-2xl lg:text-32px font-extrabold text-center text-nam-heading mb-8 px-5 lg:px-0">
+      <p className="text-2xl lg:text-32px font-extrabold text-center text-nam-heading mb-8 px-5 lg:px-0">
         Create Company Account
-      </h5>
+      </p>
 
       <Form {...form}>
         <form
@@ -119,7 +119,7 @@ const SignupForm = () => {
               variant="namPrimary"
               className="rounded p-4 w-full font-medium"
             >
-              {isLoading ? "Loading..." : "Submit"}
+              {isLoading ? "Loading..." : "Sign up"}
             </Button>
 
             <div className="flex items-center justify-center gap-1 mt-4 font-medium text-sm">

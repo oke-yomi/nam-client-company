@@ -46,7 +46,7 @@ const FormInput = ({
               <Input
                 placeholder={placeholder ?? ""}
                 {...field}
-                className={`rounded py-[14px] px-2 lg:px-4 border-nam-borderGray focus-visible:ring-nam-main placeholder:text-[#666687] ${
+                className={`rounded py-[14px] px-2 lg:px-4 border-nam-borderGray focus-visible:ring-nam-main placeholder:text-nam-placeholderGray ${
                   form.formState.errors[field.name]
                     ? "border-destructive focus-visible:ring-0"
                     : ""

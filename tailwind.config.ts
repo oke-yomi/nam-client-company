@@ -63,6 +63,7 @@ const config = {
           borderGray: "#DCDCE4",
           black: "#121212",
           heading: "#32324D",
+          placeholderGray: "#666687",
         },
       },
       keyframes: {
